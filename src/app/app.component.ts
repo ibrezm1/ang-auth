@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { environment } from '../environments/environment';
 
 interface LoginResponse {
   loggedIn: boolean;
@@ -24,6 +25,7 @@ interface DataResponse {
 export class AppComponent {
   title = 'my-angular-project';
   loggedIn = false;
+  parenturl = environment.apiUrl;
   username: string='';
   password: string='';
   data: any;
@@ -36,7 +38,7 @@ export class AppComponent {
   }
 
   login(): void {
-    this.http.post<LoginResponse>('http://localhost/be/auth/login.php', { username: this.username, password: this.password }, { withCredentials: true })
+    this.http.post<LoginResponse>( this.parenturl + '/auth/login.php', { username: this.username, password: this.password }, { withCredentials: true })
       .subscribe(response => {
         if (response.loggedIn) {
           this.loggedIn = true;
@@ -48,7 +50,7 @@ export class AppComponent {
   }
 
   checkSession(): void {
-    this.http.get<LoginResponse>('http://localhost/be/auth/login.php', { withCredentials: true })
+    this.http.get<LoginResponse>(this.parenturl + '/auth/login.php', { withCredentials: true })
       .subscribe(response => {
         console.log(response);
         if (response.loggedIn) {
@@ -61,7 +63,7 @@ export class AppComponent {
   }
 
   fetchData(): void {
-    this.http.get<DataResponse>('http://localhost/be/testauth.php', { withCredentials: true })
+    this.http.get<DataResponse>(this.parenturl + '/testauth.php', { withCredentials: true })
       .subscribe(response => {
         if (response.success) {
           this.data = response.data;
@@ -73,7 +75,7 @@ export class AppComponent {
   }
 
   logout(): void {
-    this.http.get<LoginResponse>('http://localhost/be/auth/logout.php', { withCredentials: true })
+    this.http.get<LoginResponse>(this.parenturl + '/auth/logout.php', { withCredentials: true })
       .subscribe(response => {
         if (!response.loggedIn) {
           this.loggedIn = false;
