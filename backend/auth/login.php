@@ -2,7 +2,7 @@
 session_start();
 
 // Include the configuration file
-include '../db_config.php';
+//include '../db_config.php';
 
 // Enable CORS
 header("Access-Control-Allow-Origin: http://localhost:4200");
@@ -48,5 +48,5 @@ switch ($requestMethod) {
         echo json_encode(['loggedIn' => false, 'message' => 'Invalid request method']);
 }
 
-$conn->close();
+//$conn->close();
 ?>
